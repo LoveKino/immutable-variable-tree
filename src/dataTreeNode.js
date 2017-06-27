@@ -30,13 +30,8 @@ DataTreeNode.prototype.associate = function(id, value) {
     };
 };
 
-DataTreeNode.prototype.getVariableValue = function(variableNode) {
-    let valueNode = this.valueMap[variableNode.id];
-    if (!valueNode) {
-        throw new Error(`missing value for variable with id ${variableNode.id}`);
-    }
-
-    return valueNode.value;
+DataTreeNode.prototype.getVariableValueNode = function(variableNode) {
+    return this.valueMap[variableNode.id];
 };
 
 DataTreeNode.prototype.getChild = function(key) {

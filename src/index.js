@@ -9,9 +9,9 @@ module.exports = () => {
     let variableMap = {};
 
     let set = (source, path, value) => {
-        // TODO validate path
         let tree = source.getRoot();
         let variableNode = create(tree);
+        variableNode.fromVariable(source);
 
         // find the data node
         let child = tree.getDescendant(path);
@@ -28,15 +28,24 @@ module.exports = () => {
         }
 
         let tree = variableNode.getRoot();
-
         let child = tree.getDescendant(path);
 
-        return child.getVariableValue(variableNode);
+        let valueNode = child.getVariableValueNode(variableNode);
+
+        if (valueNode) {
+            return valueNode.value;
+        } else {
+            let from = variableNode.from;
+            if (from) {
+                let fromValueNode = child.getVariableValueNode(from);
+                if (fromValueNode) return fromValueNode.value;
+            }
+        }
     };
 
-    let create = (from) => {
+    let create = (tree) => {
         let id = ++variableCount;
-        let variableNode = new VariableNode(id, from);
+        let variableNode = new VariableNode(id, tree);
         variableMap[id] = variableNode;
 
         return variableNode;
