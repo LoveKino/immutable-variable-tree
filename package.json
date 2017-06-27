@@ -1,0 +1,30 @@
+{
+  "name": "immutable-variable-tree",
+  "version": "0.0.1",
+  "description": "immutable variable tree",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoveKino/immutable-variable-tree.git"
+  },
+  "keywords": [
+    "immutable",
+    "variable",
+    "tree"
+  ],
+  "author": "ddchen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LoveKino/immutable-variable-tree/issues"
+  },
+  "homepage": "https://github.com/LoveKino/immutable-variable-tree#readme",
+  "devDependencies": {
+    "mocha": "^3.4.2"
+  }
+}
