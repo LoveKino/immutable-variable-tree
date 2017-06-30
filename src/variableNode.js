@@ -6,17 +6,18 @@ const guuid = '9c482028-5b3e-11e7-907b-a6006ad3dba0';
  * variable map
  */
 
-let VariableNode = function(id, root) {
+let VariableNode = function(id, root, from) {
     this.id = id;
     this.guuid = guuid;
     this.root = root;
+    this.from = from;
 };
 
 VariableNode.prototype.getRoot = function() {
     return this.root;
 };
 
-VariableNode.prototype.fromVariable = function(prevVariable) {
+VariableNode.prototype.setFromVariable = function(prevVariable) {
     this.from = prevVariable;
 };
 

@@ -10,11 +10,10 @@ module.exports = () => {
 
     let set = (source, path, value) => {
         let tree = source.getRoot();
-        let variableNode = create(tree);
-        variableNode.fromVariable(source);
+        let variableNode = create(tree, source); // create a new variable
 
         // find the data node
-        let child = tree.getDescendant(path);
+        let child = tree.getDescendantByCreating(path);
 
         // associate variable with value
         child.associate(variableNode.id, value);
@@ -37,15 +36,16 @@ module.exports = () => {
         } else {
             let from = variableNode.from;
             if (from) {
+                // TODO from chain, recursive
                 let fromValueNode = child.getVariableValueNode(from);
                 if (fromValueNode) return fromValueNode.value;
             }
         }
     };
 
-    let create = (tree) => {
+    let create = (tree, from) => {
         let id = ++variableCount;
-        let variableNode = new VariableNode(id, tree);
+        let variableNode = new VariableNode(id, tree, from);
         variableMap[id] = variableNode;
 
         return variableNode;
@@ -61,14 +61,18 @@ module.exports = () => {
     };
 
     let collection = (values) => {
-        let tree = new DataTreeNode();
+        let type = Array.isArray(values) ? 'array' : values && typeof values === 'object' ? 'hashMap' : null;
+        if (type === null) {
+            throw new Error(`expect collection type, array or map, but got ${values}`);
+        }
+        let tree = new DataTreeNode(type);
         let variableNode = create(tree);
 
         let children = null;
-        if (Array.isArray(values)) {
+        if (type === 'array') {
             children = [];
-            let childLen = values.length;
-            for (let i = 0; i < childLen; i++) {
+            let valLen = values.length;
+            for (let i = 0; i < valLen; i++) {
                 let child = new DataTreeNode();
                 child.associate(variableNode.id, values[i]);
                 children[i] = child;
@@ -80,8 +84,6 @@ module.exports = () => {
                 child.associate(variableNode.id, values[name]);
                 children[name] = child;
             }
-        } else {
-            throw new Error(`expect collection type, array or map, but got ${values}`);
         }
 
         tree.setChildren(children);

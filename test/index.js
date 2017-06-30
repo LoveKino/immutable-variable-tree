@@ -25,23 +25,6 @@ describe('index', () => {
         assert.equal(get(v1, '2'), 3);
     });
 
-    it('set', () => {
-        let {
-            set, get, collection
-        } = Immutable();
-
-        let v1 = collection([1, 2, 3]);
-        let v2 = set(v1, '0', 100);
-
-        assert.equal(get(v1, '0'), 1);
-        assert.equal(get(v1, '1'), 2);
-        assert.equal(get(v1, '2'), 3);
-
-        assert.equal(get(v2, '0'), 100);
-        assert.equal(get(v2, '1'), 2);
-        assert.equal(get(v2, '2'), 3);
-    });
-
     it('collection: map', () => {
         let {
             get, collection
