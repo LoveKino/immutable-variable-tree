@@ -8,7 +8,12 @@ module.exports = () => {
     // hashMap for variables
     let variableMap = {};
 
+    // immutable set method, which produce new variable
     let set = (source, path, value) => {
+        if (!VariableNode.isVariableNode(source)) {
+            throw new Error(`expect variable node, bug got ${source}`);
+        }
+
         let tree = source.getRoot();
         let variableNode = create(tree, source); // create a new variable
 
@@ -29,16 +34,18 @@ module.exports = () => {
         let tree = variableNode.getRoot();
         let child = tree.getDescendant(path);
 
-        let valueNode = child.getVariableValueNode(variableNode);
+        return getNodeValue(child, variableNode);
+    };
+
+    let getNodeValue = (dataTreeNode, variableNode) => {
+        let valueNode = dataTreeNode.getVariableValueNode(variableNode);
 
         if (valueNode) {
             return valueNode.value;
         } else {
             let from = variableNode.from;
             if (from) {
-                // TODO from chain, recursive
-                let fromValueNode = child.getVariableValueNode(from);
-                if (fromValueNode) return fromValueNode.value;
+                return getNodeValue(dataTreeNode, from);
             }
         }
     };

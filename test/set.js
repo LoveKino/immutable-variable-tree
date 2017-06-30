@@ -98,4 +98,22 @@ describe('set', () => {
             assert.equal(get(v, 'b'), 2);
         }
     });
+
+    it('set key in a row', () => {
+        let {
+            set, get, collection
+        } = Immutable();
+
+        let v0 = collection([]);
+
+        let prev = v0;
+        for (let i = 0; i < 10; i++) {
+            let next = set(prev, i, i);
+            prev = next;
+        }
+
+        for (let j = 0; j < 10; j++) {
+            assert.equal(get(prev, j), j);
+        }
+    });
 });
